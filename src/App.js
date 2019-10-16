@@ -23,7 +23,7 @@ function Cita({ cita }) {
 }
 
 function Formulario({ crearCita }) {
-  
+
   const stateInicial = {
     mascota: "",
     propietario: "",
@@ -32,8 +32,10 @@ function Formulario({ crearCita }) {
     sintomas: ""
   };
 
+  // cita = state actual, actualizarCita = setState()
   const [cita, actualizarCita] = useState(stateInicial);
 
+  // actualiza el state
   const actualizarState = e => {
     actualizarCita({
       ...cita,
@@ -41,10 +43,10 @@ function Formulario({ crearCita }) {
     });
   };
 
+  // pasamos la cita al componente principal
   const enviarCita = e => {
     e.preventDefault();
 
-    // pasar la cita hacia el componente principal
     crearCita(cita);
 
     // reiniciar el state (reiniciar el form)
