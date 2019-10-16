@@ -1,34 +1,46 @@
 import React, { useState, Fragment } from "react";
 
-function Cita({cita}) {
+function Cita({ cita }) {
   return (
     <div className="cita">
-      <p>Mascota: <span>{cita.mascota}</span></p>
-      <p>Propietario: <span>{cita.propietario}</span></p>
-      <p>Fecha: <span>{cita.fecha}</span></p>
-      <p>Hora <span>{cita.hora}</span></p>
-      <p>Sintomas: <span>{cita.sintomas}</span></p>
+      <p>
+        Mascota: <span>{cita.mascota}</span>
+      </p>
+      <p>
+        Propietario: <span>{cita.propietario}</span>
+      </p>
+      <p>
+        Fecha: <span>{cita.fecha}</span>
+      </p>
+      <p>
+        Hora <span>{cita.hora}</span>
+      </p>
+      <p>
+        Sintomas: <span>{cita.sintomas}</span>
+      </p>
     </div>
   );
 }
 
-function Formulario({crearCita}) {
+function Formulario({ crearCita }) {
   
-  const [cita, actualizarCita] = useState({
-    mascota : '',
-    propietario : '',
-    fecha: '',
-    hora: '',
-    sintomas: ''
-  });
+  const stateInicial = {
+    mascota: "",
+    propietario: "",
+    fecha: "",
+    hora: "",
+    sintomas: ""
+  };
+
+  const [cita, actualizarCita] = useState(stateInicial);
 
   const actualizarState = e => {
     actualizarCita({
       ...cita,
-      [e.target.name] : e.target.value
-    })
+      [e.target.name]: e.target.value
+    });
   };
-  
+
   const enviarCita = e => {
     e.preventDefault();
 
@@ -36,7 +48,8 @@ function Formulario({crearCita}) {
     crearCita(cita);
 
     // reiniciar el state (reiniciar el form)
-  }
+    actualizarCita(stateInicial);
+  };
 
   return (
     <Fragment>
@@ -50,6 +63,7 @@ function Formulario({crearCita}) {
           className="u-full-width"
           placeholder="Nombre Mascota"
           onChange={actualizarState}
+          value={cita.mascota}
         />
 
         <label>Nombre Dueño</label>
@@ -59,16 +73,34 @@ function Formulario({crearCita}) {
           className="u-full-width"
           placeholder="Nombre Dueño de la Mascota"
           onChange={actualizarState}
+          value={cita.propietario}
         />
 
         <label>Fecha</label>
-        <input type="date" className="u-full-width" name="fecha" onChange={actualizarState} />
+        <input
+          type="date"
+          className="u-full-width"
+          name="fecha"
+          onChange={actualizarState}
+          value={cita.fecha}
+        />
 
         <label>Hora</label>
-        <input type="time" className="u-full-width" name="hora" onChange={actualizarState} />
+        <input
+          type="time"
+          className="u-full-width"
+          name="hora"
+          onChange={actualizarState}
+          value={cita.hora}
+        />
 
         <label>Sintomas</label>
-        <textarea className="u-full-width" name="sintomas" onChange={actualizarState}></textarea>
+        <textarea
+          className="u-full-width"
+          name="sintomas"
+          onChange={actualizarState}
+          value={cita.sintomas}
+        ></textarea>
 
         <button type="submit" className="button-primary u-full-width">
           Agregar
@@ -89,23 +121,19 @@ function App() {
     const nuevasCitas = [...citas, cita];
     // almacenamos en el state
     guardarCita(nuevasCitas);
-  }
-  
+  };
+
   return (
     <Fragment>
       <h1>Administrador de Pacientes</h1>
       <div className="container">
         <div className="row">
           <div className="one-half column">
-            <Formulario crearCita = {crearCita}/>
+            <Formulario crearCita={crearCita} />
           </div>
           <div className="one-half column">
             {citas.map((cita, index) => (
-              <Cita 
-                key={index}
-                index={index}
-                cita={cita}
-              />
+              <Cita key={index} index={index} cita={cita} />
             ))}
           </div>
         </div>
