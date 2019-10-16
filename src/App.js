@@ -1,5 +1,17 @@
 import React, { useState, Fragment } from "react";
 
+function Cita({cita}) {
+  return (
+    <div className="cita">
+      <p>Mascota: <span>{cita.mascota}</span></p>
+      <p>Propietario: <span>{cita.propietario}</span></p>
+      <p>Fecha: <span>{cita.fecha}</span></p>
+      <p>Hora <span>{cita.hora}</span></p>
+      <p>Sintomas: <span>{cita.sintomas}</span></p>
+    </div>
+  );
+}
+
 function Formulario({crearCita}) {
   
   const [cita, actualizarCita] = useState({
@@ -78,9 +90,7 @@ function App() {
     // almacenamos en el state
     guardarCita(nuevasCitas);
   }
-
-
-
+  
   return (
     <Fragment>
       <h1>Administrador de Pacientes</h1>
@@ -89,7 +99,15 @@ function App() {
           <div className="one-half column">
             <Formulario crearCita = {crearCita}/>
           </div>
-          <div className="one-half column"></div>
+          <div className="one-half column">
+            {citas.map((cita, index) => (
+              <Cita 
+                key={index}
+                index={index}
+                cita={cita}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </Fragment>
