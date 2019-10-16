@@ -1,6 +1,23 @@
 import React, { useState, Fragment } from "react";
 
 function Formulario() {
+  
+  const [cita, actualizarCita] = useState({
+    mascota : '',
+    propietario : '',
+    fecha: '',
+    hora: '',
+    sintomas: ''
+  });
+
+  const actualizarState = e => {
+    actualizarCita({
+      ...cita,
+      [e.target.name] : e.target.value
+    })
+  };
+  
+
   return (
     <Fragment>
       <h2>Crear Cita</h2>
@@ -12,6 +29,7 @@ function Formulario() {
           name="mascota"
           className="u-full-width"
           placeholder="Nombre Mascota"
+          onChange={actualizarState}
         />
 
         <label>Nombre Dueño</label>
@@ -20,16 +38,17 @@ function Formulario() {
           name="propietario"
           className="u-full-width"
           placeholder="Nombre Dueño de la Mascota"
+          onChange={actualizarState}
         />
 
         <label>Fecha</label>
-        <input type="date" className="u-full-width" name="fecha" />
+        <input type="date" className="u-full-width" name="fecha" onChange={actualizarState} />
 
         <label>Hora</label>
-        <input type="time" className="u-full-width" name="hora" />
+        <input type="time" className="u-full-width" name="hora" onChange={actualizarState} />
 
         <label>Sintomas</label>
-        <textarea className="u-full-width" name="sintomas"></textarea>
+        <textarea className="u-full-width" name="sintomas" onChange={actualizarState}></textarea>
 
         <button type="submit" className="button-primary u-full-width">
           Agregar
