@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 function Cita({ cita, index, eliminarCita }) {
   return (
@@ -18,15 +18,18 @@ function Cita({ cita, index, eliminarCita }) {
       <p>
         Sintomas: <span>{cita.sintomas}</span>
       </p>
-      <button 
-      onClick={()=> eliminarCita(index)}
-      type="button" className="button eliminar u-full-width">Eliminar X</button>
+      <button
+        onClick={() => eliminarCita(index)}
+        type="button"
+        className="button eliminar u-full-width"
+      >
+        Eliminar X
+      </button>
     </div>
   );
 }
 
 function Formulario({ crearCita }) {
-
   const stateInicial = {
     mascota: "",
     propietario: "",
@@ -116,6 +119,13 @@ function Formulario({ crearCita }) {
 }
 
 function App() {
+  // cargar las citas de local storage como state inicial
+  let citasIniciales = JSON.parse(localStorage.getItem("citas"));
+
+  if (!citasIniciales) {
+    citasIniciales = [];
+  }
+
   // useState retorna 2 funciones
   // El primero es el state actual = this.state, el segundo es la funcion que actualiza el state = this.setState();
   const [citas, guardarCita] = useState([]);
@@ -133,12 +143,21 @@ function App() {
     const nuevasCitas = [...citas];
     nuevasCitas.splice(index, 1);
     guardarCita(nuevasCitas);
-  }
+  };
 
+  useEffect(() => {
+    let citasIniciales = JSON.parse(localStorage.getItem("citas"));
+
+    if (citasIniciales) {
+      localStorage.setItem("citas", JSON.stringify(citas));
+    } else {
+      localStorage.setItem("citas", JSON.stringify([]));
+    }
+  },[citas]);
 
   // cargar condicionalmente un Titulo
-  const titulo = Object.keys(citas).length === 0 ? 'No hay Citas' : 'Administrar las citas';
-
+  const titulo =
+    Object.keys(citas).length === 0 ? "No hay Citas" : "Administrar las citas";
 
   return (
     <Fragment>
@@ -151,10 +170,10 @@ function App() {
           <div className="one-half column">
             <h2>{titulo}</h2>
             {citas.map((cita, index) => (
-              <Cita 
-                key={index} 
-                index={index} 
-                cita={cita} 
+              <Cita
+                key={index}
+                index={index}
+                cita={cita}
                 eliminarCita={eliminarCita}
               />
             ))}
